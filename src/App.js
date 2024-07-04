@@ -4,7 +4,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPlus, faQuoteLeft, faMagnifyingGlass, faCircleHalfStroke, faCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPlus, faQuoteLeft, faMagnifyingGlass, faCircleHalfStroke, faCircleUp, faPoo, faBell } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [listOpen, setListOpen] = useState(false);
@@ -19,6 +19,7 @@ function App() {
   const [pushPostQuantity, setPushPostQuantity] = useState(0);
 
   const listToggle = () => { setListOpen(!listOpen); }
+  
   const themeToggle = () => { 
     setThemeBrightness(!themeBrightness);
     setLightColor(lightColor === '#fff' ? '#EAEAEA' : '#fff');
@@ -28,11 +29,14 @@ function App() {
   }
   
   const pushPostToggle = () => {
-    setPushPostIcon(pushPostIcon === '#FFC648' ? '#fff' : '#FFC648' );
     setPushPostButton(pushPostButton === '#EAEAEA' ? '#FFC648' : '#EAEAEA');
-    
+    console.log('pushPostButton' + pushPostButton);
+
+    setPushPostIcon(pushPostIcon === '#FFC648' ? '#EAEAEA' : '#FFC648' );
+    console.log('pushPostIcon' + pushPostIcon);
+
     setPushPostQuantity(prevQuantity => {
-      if (pushPostIcon === '#FFC648') {
+      if (pushPostButton === '#EAEAEA') {
         return prevQuantity + 1;
       } else {
         return prevQuantity - 1;
@@ -120,9 +124,9 @@ function App() {
             </p>
           </div>
           <div class = "postButton">
-            <div class = "pushPost" onClick={pushPostToggle} isExpanded={pushPostIcon} pushPostButton={pushPostButton}>
-              <StyledPushPostIconImg icon= {faCircleUp} pushPostIcon={pushPostIcon} />
-              <p pushPostIcon={pushPostIcon} >{pushPostQuantity}</p>
+            <div class = "pushPost" onClick={pushPostToggle} pushPostButton={pushPostButton} isExpanded={pushPostButton} >
+              <StyledPushPostIconImg icon= {faCircleUp} pushPostIcon={pushPostIcon} isExpanded={pushPostIcon} />
+              <p pushPostIcon={pushPostIcon} isExpanded={pushPostIcon} >{pushPostQuantity}</p>
             </div>
             
             <div class = "message">
@@ -137,7 +141,7 @@ function App() {
       </StyledMiddlePad>
 
       {/* 右邊板塊 */}
-      <StyledLeftPad>
+      <StyledLeftPad >
         <StyledThemeToggle lightColor={lightColor} darkColor={darkColor} bgColor={bgColor} onClick={themeToggle} isExpanded={themeBrightness}>
           <StyledThemeToggleIcon icon={faCircleHalfStroke} isExpanded={themeBrightness} />
           <h1>{themeName}</h1>
@@ -145,6 +149,20 @@ function App() {
             <div class = "inner"></div>
           </div>
         </StyledThemeToggle>
+        <StyledProfile>
+          <img />
+          <h1>淡淡</h1>
+          <div class = "profileDown">
+            <div class="profileDownButton">
+              <FontAwesomeIcon class="profileIcon" icon={faPoo} />
+              <p>18</p>
+            </div>
+            <div class="profileDownButton">
+              <FontAwesomeIcon class="profileIcon" icon={faBell} />
+              <p>18</p>
+            </div>
+          </div>
+        </StyledProfile>
       </StyledLeftPad>
     </StyledWebsite>
     
@@ -311,7 +329,7 @@ const StyledMPSearchBar = styled.div`
   input{
     margin-left: 10px;
     width: 530px;
-    color: ${DarkColor};
+    color: ${({ darkColor }) => darkColor};
     background-color: ${({ bgColor }) => bgColor};
     border: 0px;
     outline: none;
@@ -414,6 +432,7 @@ const StyledMPPost = styled.div`
     height: 30px;
     width: 550px;
     .pushPost{
+      margin: 10px 20px;
       background-color: ${({ pushPostButton }) => pushPostButton};
       display: flex;
       justify-content: flex-start;
@@ -482,6 +501,49 @@ const StyledThemeToggleIcon = styled(FontAwesomeIcon) `
   margin-left: 10px;
   transition: all 0.5s;
   transform: ${({ isExpanded }) => (isExpanded ? 'rotate(180deg)' : 'rotate(0deg)')};
+`
+
+const StyledProfile = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 300px;
+  height: 150px;
+  background-color: ${LightColor};
+  margin-top: 30px;
+  border-radius: 20px;
+  .profileDown{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 300px;
+    height: 50px;
+    margin-bottom: 0px;
+    background-color: ${DarkColor};
+    
+    .profileDownButton{
+      display: flex;
+      cursor: pointer;
+      p{
+        color: ${LightColor};
+        align-items: center;
+        text-align: center;
+        width: 30px;
+        height: auto;
+        margin-left: 10px;
+        background-color: red;
+        border-radius: 10px;
+        font-size: 12px;
+      }
+    }
+
+    .profileIcon{
+      width: 20px;
+      height: 20px;
+      color: ${LightColor};
+    }
+  }
 `
 
 export default App;
